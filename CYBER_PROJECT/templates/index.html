@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Intrusion Detection</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+
+            min-height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            overflow:hidden;
+
+            background:
+            linear-gradient(
+                135deg,
+                #fff7ed,
+                #fef3e2,
+                #eef6ff,
+                #f8fbff
+            );
+
+            position:relative;
+
+            padding:40px;
+        }
+
+        /* Background Blur Effects */
+
+        body::before,
+        body::after{
+            content:'';
+
+            position:absolute;
+
+            border-radius:50%;
+
+            filter:blur(100px);
+
+            z-index:0;
+
+            animation:float 8s ease-in-out infinite;
+        }
+
+        body::before{
+            width:420px;
+            height:420px;
+
+            background:#ffd6a5;
+
+            top:-120px;
+            left:-120px;
+        }
+
+        body::after{
+            width:420px;
+            height:420px;
+
+            background:#bde0fe;
+
+            bottom:-120px;
+            right:-120px;
+
+            animation-delay:2s;
+        }
+
+        @keyframes float{
+
+            0%,100%{
+                transform:translateY(0px);
+            }
+
+            50%{
+                transform:translateY(25px);
+            }
+
+        }
+
+        /* Main Layout */
+
+        .main-wrapper{
+
+            position:relative;
+
+            z-index:2;
+
+            width:1450px;
+
+            max-width:97%;
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            gap:40px;
+
+            align-items:stretch;
+        }
+
+        /* Left Panel */
+
+        .left-panel{
+
+            padding:70px 60px;
+
+            border-radius:40px;
+
+            background:rgba(255,255,255,0.50);
+
+            backdrop-filter:blur(18px);
+
+            border:1px solid rgba(255,255,255,0.45);
+
+            box-shadow:
+            0 15px 50px rgba(0,0,0,0.08);
+
+            animation:fadeIn 1s ease;
+
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+
+            min-height:760px;
+        }
+
+        @keyframes fadeIn{
+
+            from{
+                opacity:0;
+                transform:translateY(30px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
+        .hero-title{
+
+            font-size:72px;
+
+            line-height:1.05;
+
+            font-weight:700;
+
+            color:#243b53;
+
+            margin-bottom:30px;
+        }
+
+        .hero-text{
+
+            color:#5b7083;
+
+            font-size:22px;
+
+            line-height:1.9;
+
+            margin-bottom:50px;
+        }
+
+        /* Feature Grid */
+
+        .feature-grid{
+
+            display:grid;
+
+            grid-template-columns:repeat(2,1fr);
+
+            gap:25px;
+        }
+
+        .feature-card{
+
+            padding:30px;
+
+            border-radius:24px;
+
+            background:rgba(255,255,255,0.72);
+
+            box-shadow:
+            0 8px 25px rgba(0,0,0,0.05);
+
+            transition:0.3s ease;
+        }
+
+        .feature-card:hover{
+
+            transform:translateY(-5px);
+
+        }
+
+        .feature-card h3{
+
+            font-size:22px;
+
+            color:#243b53;
+
+            margin-bottom:12px;
+        }
+
+        .feature-card p{
+
+            color:#64748b;
+
+            font-size:16px;
+
+            line-height:1.8;
+        }
+
+        /* Right Form */
+
+        .container{
+
+            width:100%;
+
+            padding:70px 60px;
+
+            border-radius:40px;
+
+            background:rgba(255,255,255,0.58);
+
+            backdrop-filter:blur(18px);
+
+            border:1px solid rgba(255,255,255,0.45);
+
+            box-shadow:
+            0 15px 50px rgba(0,0,0,0.08);
+
+            animation:fadeIn 1s ease;
+
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+
+            min-height:760px;
+        }
+
+        .title{
+
+            text-align:center;
+
+            font-size:42px;
+
+            font-weight:700;
+
+            color:#243b53;
+
+            margin-bottom:14px;
+        }
+
+        .subtitle{
+
+            text-align:center;
+
+            color:#6b7c93;
+
+            font-size:18px;
+
+            margin-bottom:45px;
+        }
+
+        /* Inputs */
+
+        .input-group{
+            margin-bottom:25px;
+        }
+
+        label{
+
+            display:block;
+
+            margin-bottom:12px;
+
+            font-size:18px;
+
+            font-weight:600;
+
+            color:#425466;
+        }
+
+        input{
+
+            width:100%;
+
+            padding:20px;
+
+            border:none;
+
+            outline:none;
+
+            border-radius:18px;
+
+            background:rgba(255,255,255,0.88);
+
+            color:#243b53;
+
+            font-size:17px;
+
+            box-shadow:
+            inset 0 2px 5px rgba(0,0,0,0.04);
+
+            transition:0.3s ease;
+        }
+
+        input::placeholder{
+
+            color:#94a3b8;
+
+        }
+
+        input:focus{
+
+            transform:translateY(-2px);
+
+            box-shadow:
+            0 8px 18px rgba(96,165,250,0.25);
+
+            background:white;
+        }
+
+        /* Button */
+
+        .predict-btn{
+
+            width:100%;
+
+            padding:20px;
+
+            border:none;
+
+            border-radius:18px;
+
+            background:
+            linear-gradient(
+                135deg,
+                #ffb4a2,
+                #a0c4ff
+            );
+
+            color:white;
+
+            font-size:20px;
+
+            font-weight:700;
+
+            cursor:pointer;
+
+            transition:0.3s ease;
+
+            margin-top:25px;
+
+            box-shadow:
+            0 15px 30px rgba(160,196,255,0.35);
+        }
+
+        .predict-btn:hover{
+
+            transform:translateY(-3px) scale(1.02);
+
+            box-shadow:
+            0 20px 35px rgba(160,196,255,0.45);
+        }
+
+        .predict-btn:active{
+
+            transform:scale(0.98);
+
+        }
+
+        /* Loading Screen */
+
+        .loading-overlay{
+
+            position:fixed;
+
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            background:rgba(255,255,255,0.75);
+
+            backdrop-filter:blur(10px);
+
+            display:none;
+
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+
+            z-index:999;
+        }
+
+        .loader{
+
+            width:80px;
+            height:80px;
+
+            border-radius:50%;
+
+            border:7px solid #e2e8f0;
+
+            border-top:7px solid #7dd3fc;
+
+            animation:spin 1s linear infinite;
+        }
+
+        @keyframes spin{
+
+            100%{
+                transform:rotate(360deg);
+            }
+
+        }
+
+        .loading-text{
+
+            margin-top:25px;
+
+            font-size:22px;
+
+            font-weight:600;
+
+            color:#334155;
+        }
+
+        /* Popup */
+
+        .popup{
+
+            position:fixed;
+
+            top:50%;
+            left:50%;
+
+            transform:translate(-50%,-50%);
+
+            width:420px;
+
+            padding:40px;
+
+            border-radius:30px;
+
+            background:white;
+
+            text-align:center;
+
+            z-index:1000;
+
+            display:none;
+
+            animation:popupAnim 0.4s ease;
+
+            box-shadow:
+            0 20px 50px rgba(0,0,0,0.12);
+        }
+
+        @keyframes popupAnim{
+
+            from{
+                opacity:0;
+                transform:translate(-50%,-40%);
+            }
+
+            to{
+                opacity:1;
+                transform:translate(-50%,-50%);
+            }
+
+        }
+
+        .popup h2{
+
+            color:#334155;
+
+            margin-bottom:20px;
+
+            font-size:32px;
+        }
+
+        .popup p{
+
+            font-size:28px;
+
+            font-weight:700;
+
+            color:#0f172a;
+
+            margin-bottom:30px;
+        }
+
+        .close-btn{
+
+            padding:15px 35px;
+
+            border:none;
+
+            border-radius:16px;
+
+            background:
+            linear-gradient(
+                135deg,
+                #ffb4a2,
+                #a0c4ff
+            );
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            transition:0.3s ease;
+        }
+
+        .close-btn:hover{
+
+            transform:translateY(-2px);
+
+        }
+
+        /* Responsive */
+
+        @media(max-width:1200px){
+
+            .main-wrapper{
+                grid-template-columns:1fr;
+            }
+
+            .hero-title{
+                font-size:52px;
+            }
+
+        }
+
+        @media(max-width:768px){
+
+            body{
+                padding:20px;
+            }
+
+            .left-panel,
+            .container{
+
+                padding:40px 30px;
+
+                min-height:auto;
+            }
+
+            .hero-title{
+                font-size:38px;
+            }
+
+            .hero-text{
+                font-size:18px;
+            }
+
+            .feature-grid{
+                grid-template-columns:1fr;
+            }
+
+            .title{
+                font-size:32px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Loading -->
+
+    <div class="loading-overlay" id="loading">
+
+        <div class="loader"></div>
+
+        <div class="loading-text">
+            Scanning Network Activity...
+        </div>
+
+    </div>
+
+    <!-- Popup -->
+
+    {% if show_popup %}
+    <div class="popup" id="popup">
+
+        <h2>Detection Result</h2>
+
+        <p>{{ prediction }}</p>
+
+        <button class="close-btn" onclick="closePopup()">
+            Close
+        </button>
+
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+
+    <div class="main-wrapper">
+
+        <!-- Left Section -->
+
+        <div class="left-panel">
+
+            <div class="hero-title">
+                AI Powered <br>
+                Intrusion Detection
+            </div>
+
+            <div class="hero-text">
+
+                Advanced machine learning system for smart
+                network monitoring, cyber attack detection,
+                and intelligent traffic analysis.
+
+            </div>
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+
+                    <h3>Real-Time Analysis</h3>
+
+                    <p>
+                        Detect suspicious network traffic
+                        instantly using AI models.
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <h3>Smart Prediction</h3>
+
+                    <p>
+                        Predict intrusion attacks with
+                        high accuracy and speed.
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <h3>Secure Monitoring</h3>
+
+                    <p>
+                        Monitor packet flow and identify
+                        abnormal behavior patterns.
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <h3>Threat Detection</h3>
+
+                    <p>
+                        AI-enhanced cybersecurity system
+                        for modern networks.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Form Section -->
+
+        <div class="container">
+
+            <div class="title">
+                AI Intrusion Detection
+            </div>
+
+            <div class="subtitle">
+                Smart Network Monitoring & Threat Analysis
+            </div>
+
+            <form method="POST" action="/predict" onsubmit="showLoading()">
+
+                <div class="input-group">
+
+                    <label>Flow Duration</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="flow_duration"
+                        placeholder="Enter flow duration value"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Forward Packets</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="total_fwd_packets"
+                        placeholder="Enter total forward packets"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Backward Packets</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="total_backward_packets"
+                        placeholder="Enter backward packets count"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Forward Packet Length</label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="total_length_fwd_packets"
+                        placeholder="Enter forward packet length"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit" class="predict-btn">
+                    Analyze Threat
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function showLoading(){
+
+            document.getElementById("loading").style.display = "flex";
+
+        }
+
+        function closePopup(){
+
+            document.getElementById("popup").style.display = "none";
+
+        }
+
+        window.onload = function(){
+
+            {% if show_popup %}
+
+                document.getElementById("loading").style.display = "none";
+
+                document.getElementById("popup").style.display = "block";
+
+            {% endif %}
+
+        }
+
+    </script>
+
+</body>
+</html>
